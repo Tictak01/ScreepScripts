@@ -12,7 +12,7 @@ var roleHarvester = {
             creep.say('deliver');
         }
 
-        var sourceChoice = 1;
+        var sourceChoice = 0;
         var blockerCount = -1;
         if(!creep.memory.harvesting) {
             var sources = creep.room.find(FIND_SOURCES);
@@ -27,14 +27,14 @@ var roleHarvester = {
                 if(element['terrain'] == 'wall'){
                     blockerCount += 1;
                 };
-                if(element['type'] == 'creep'){
+                if(element['type'] == 'creep' && creep.name != element['creep'].name){
                     blockerCount += 1;
                 };
                 
             }
-            console.log(blockerCount);
-            if(blockerCount >= 9){
-                sourceChoice -= 1;
+            //console.log(blockerCount);
+            if(blockerCount >= 8){
+                sourceChoice += 1;
             }
 
             if(creep.harvest(sources[sourceChoice]) == ERR_NOT_IN_RANGE) {

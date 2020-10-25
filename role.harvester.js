@@ -50,8 +50,19 @@ var roleHarvester = {
                 }
             });
             if(targets.length > 0) {
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                var nearestNode = 0;
+                var distance = creep.pos.getRangeTo(targets[0].pos);
+                for(var target in targets){
+                    if(creep.pos.getRangeTo(targets[target].pos) < distance){
+                        distance = creep.pos.getRangeTo(targets[target].pos);
+                        nearestNode = target;
+                        console.log(distance);
+                        console.log(target);
+                    }
+                }
+                
+                if(creep.transfer(targets[nearestNode], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[nearestNode], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
             var roads = creep.room.find(FIND_STRUCTURES, {

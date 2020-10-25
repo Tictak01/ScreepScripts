@@ -17,18 +17,27 @@ var roleUpgrader = {
                 creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         }
+        
         else {
             var sources = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     return (structure.structureType == STRUCTURE_CONTAINER);
                 }
             });
-            if(creep.withdraw(sources[0],'energy',100) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-            
+            var sourceChoice = 0;
+            for(var element in sources){
+                if(sources[element].store[RESOURCE_ENERGY] >= 100){
+                    sourceChoice = element;
+                    console.log(sourceChoice)
+                };
             }
+            
+            if(creep.withdraw(sources[sourceChoice],'energy',100) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[sourceChoice], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+        
         }
-        if(creep.ticksToLive <= 50){
+        if(creep.ticksToLive <= 20){
             creep.say('☠️');
         }
     }

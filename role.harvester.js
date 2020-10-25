@@ -36,6 +36,14 @@ var roleHarvester = {
             if(blockerCount >= 8){
                 sourceChoice += 1;
             }
+            if(sources[sourceChoice].energy <= 100 && sourceChoice == 0)
+            {
+                sourceChoice += 1;
+            }
+            if(sources[sourceChoice].energy <= 100 && sourceChoice == 1)
+            {
+                sourceChoice -= 1;
+            }
 
             if(creep.harvest(sources[sourceChoice]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[sourceChoice], {visualizePathStyle: {stroke: '#ffaa00'}});
@@ -45,7 +53,7 @@ var roleHarvester = {
         if(creep.memory.harvesting) {
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
-                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_CONTAINER || structure.structureType == STRUCTURE_TOWER) &&
+                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_TOWER || structure.structureType == STRUCTURE_STORAGE) &&
                         structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
                 }
             });
@@ -56,8 +64,6 @@ var roleHarvester = {
                     if(creep.pos.getRangeTo(targets[target].pos) < distance){
                         distance = creep.pos.getRangeTo(targets[target].pos);
                         nearestNode = target;
-                        console.log(distance);
-                        console.log(target);
                     }
                 }
                 
@@ -82,7 +88,7 @@ var roleHarvester = {
 
 
         
-        if(creep.ticksToLive <= 50){
+        if(creep.ticksToLive <= 20){
             creep.say('☠️');
         }
     }

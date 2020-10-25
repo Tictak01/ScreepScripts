@@ -12,10 +12,33 @@ var roleHarvester = {
             creep.say('deliver');
         }
 
+        var sourceChoice = 1;
+        var blockerCount = -1;
         if(!creep.memory.harvesting) {
             var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#ffaa00'}});
+            var sourceTop = sources[sourceChoice].pos.y - 1;
+            var sourceBottom = sources[sourceChoice].pos.y + 1;
+            var sourceLeft = sources[sourceChoice].pos.x - 1;
+            var sourceRight = sources[sourceChoice].pos.x + 1;
+            var sourceRoom = sources[sourceChoice].pos.roomName;
+            //console.log(sourceRight);
+
+            for(var element of Game.rooms[sourceRoom].lookAtArea(sourceTop,sourceLeft,sourceBottom,sourceRight,true)){
+                if(element['terrain'] == 'wall'){
+                    blockerCount += 1;
+                };
+                if(element['type'] == 'creep'){
+                    blockerCount += 1;
+                };
+                
+            }
+            console.log(blockerCount);
+            if(blockerCount >= 9){
+                sourceChoice -= 1;
+            }
+
+            if(creep.harvest(sources[sourceChoice]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[sourceChoice], {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
 

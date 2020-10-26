@@ -10,6 +10,8 @@ var roleHarvester = {
         if(!creep.memory.harvesting && creep.store.getFreeCapacity() == 0) {
             creep.memory.harvesting = true;
             creep.say('deliver');
+            creep.memory.atSource = 0;
+            creep.memory.sourceChoice = 0;
         }
 
         var sourceChoice = 0;
@@ -33,8 +35,13 @@ var roleHarvester = {
                 
             }
             //console.log(blockerCount);
+            
+            if(creep.memory.atSource == 1 && creep.memory.sourceChoice == 1 && blockerCount < 8){
+                sourceChoice += 1;
+            }
             if(blockerCount >= 8){
                 sourceChoice += 1;
+                creep.memory.sourceChoice = 1
             }
             if(sources[sourceChoice].energy <= 100 && sourceChoice == 0)
             {
@@ -47,6 +54,9 @@ var roleHarvester = {
 
             if(creep.harvest(sources[sourceChoice]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[sourceChoice], {visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+            else if(creep.harvest(sources[sourceChoice]) == OK) {
+                creep.memory.atSource = 1;
             }
         }
 
@@ -69,6 +79,7 @@ var roleHarvester = {
                 
                 if(creep.transfer(targets[nearestNode], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[nearestNode], {visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.memory.atSource = 0;
                 }
             }
             var roads = creep.room.find(FIND_STRUCTURES, {

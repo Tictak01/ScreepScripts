@@ -62,7 +62,7 @@ sources[0].pos;
 var sources = Game.creeps['Harvester77930'].room.find(FIND_SOURCES); sources[0].pos;
 
 //worked
-for(var element of Game.rooms['W2N5'].lookAtArea(38,12,40,14,true)){     console.log(element['type'])     if(element['terrain'] == 'wall'){         console.log('sup')     }; }
+for(var element of Game.rooms['W2N5'].lookAtArea(38,12,40,14,true)){     console.log(element['type']);     if(element['terrain'] == 'wall'){         console.log('sup')     }; }
 
 //don't take creep when working
 var creep = Game.creeps['Upgrader88488'];
